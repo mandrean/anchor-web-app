@@ -10,7 +10,7 @@ export function pegRecovery(
     return undefined;
   }
 
-  return big(exchangeRate.exchange_rate).lt(parameters.er_threshold)
+  return big(exchangeRate.bluna_exchange_rate).lt(parameters.er_threshold)
     ? (amount: bLuna | Luna) =>
         big(parameters.peg_recovery_fee).mul(microfy(amount)) as u<bLuna<Big>>
     : undefined;

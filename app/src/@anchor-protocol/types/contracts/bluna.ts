@@ -128,11 +128,12 @@ export namespace bluna {
      */
     export interface ParametersResponse {
       epoch_period: number;
-      underlying_coin_denom: string;
-      unbonding_period: number;
-      peg_recovery_fee: Rate;
       er_threshold: Rate;
+      paused: boolean;
+      peg_recovery_fee: Rate;
       reward_denom: string;
+      unbonding_period: number;
+      underlying_coin_denom: string;
     }
 
     /**
@@ -146,13 +147,17 @@ export namespace bluna {
      * @see https://anchor-protocol.gitbook.io/anchor-2/smart-contracts/bluna/hub-1#stateresponse
      */
     export interface StateResponse {
-      exchange_rate: Rate;
-      total_bond_amount: u<Luna>;
+      // FIXME exchange_rate -> bluna_exchange_rate
+      bluna_exchange_rate: Rate;
       last_index_modification: DateTime;
-      prev_hub_balance: u<Luna>;
-      actual_unbonded_amount: u<Luna>;
-      last_unbonded_time: DateTime;
       last_processed_batch: number;
+      last_unbonded_time: DateTime;
+      prev_hub_balance: u<Luna>;
+      // FIXME total_bond_amount -> total_bond_bluna_amount
+      total_bond_bluna_amount: u<Luna>;
+      //actual_unbonded_amount: u<Luna>;
+      stluna_exchange_rate: Rate;
+      total_bond_stluna_amount: Rate;
     }
 
     /**

@@ -60,6 +60,12 @@ export const links = {
 // chain
 // ---------------------------------------------
 export function ANCHOR_QUERY_CLIENT(network: NetworkInfo): 'lcd' | 'hive' {
+  if (network.chainID.startsWith('columnbus')) {
+    alert(
+      `This version does not work on mainnet because this version is only working with the updated bluna contracts`,
+    );
+  }
+
   if (network.chainID.startsWith('bombay')) {
     return 'lcd';
   } else {

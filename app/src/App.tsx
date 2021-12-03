@@ -39,9 +39,13 @@ import './configurations/chartjs';
 export function App() {
   const chainOptions = useChainOptions();
 
+  // TODO change to <AppProviders {...chainOptions}>
   return (
     chainOptions && (
-      <AppProviders {...chainOptions}>
+      <AppProviders
+        walletConnectChainIds={chainOptions.walletConnectChainIds}
+        defaultNetwork={chainOptions.walletConnectChainIds[0]}
+      >
         <NotificationProvider>
           <JobsProvider>
             <div>

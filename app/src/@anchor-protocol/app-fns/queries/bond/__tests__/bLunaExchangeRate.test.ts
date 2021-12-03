@@ -9,7 +9,7 @@ describe('queries/bLunaExchangeRate', () => {
       TEST_LCD_CLIENT,
     );
 
-    expect(+state.exchange_rate).not.toBeNaN();
+    expect(+state.bluna_exchange_rate).not.toBeNaN();
     expect(state).not.toBeUndefined();
     expect(parameters).not.toBeUndefined();
   });

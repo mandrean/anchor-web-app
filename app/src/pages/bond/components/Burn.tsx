@@ -113,14 +113,16 @@ export function Burn() {
       } else {
         const burnAmount: bLuna = nextBurnAmount as bLuna;
         const getAmount: Luna = formatLunaInput(
-          big(burnAmount).mul(exchangeRate?.exchange_rate ?? 1) as Luna<Big>,
+          big(burnAmount).mul(
+            exchangeRate?.bluna_exchange_rate ?? 1,
+          ) as Luna<Big>,
         );
 
         setGetAmount(getAmount);
         setBurnAmount(burnAmount);
       }
     },
-    [exchangeRate?.exchange_rate],
+    [exchangeRate?.bluna_exchange_rate],
   );
 
   const updateGetAmount = useCallback(
@@ -131,14 +133,16 @@ export function Burn() {
       } else {
         const getAmount: Luna = nextGetAmount as Luna;
         const burnAmount: bLuna = formatLunaInput(
-          big(getAmount).div(exchangeRate?.exchange_rate ?? 1) as bLuna<Big>,
+          big(getAmount).div(
+            exchangeRate?.bluna_exchange_rate ?? 1,
+          ) as bLuna<Big>,
         );
 
         setBurnAmount(burnAmount);
         setGetAmount(getAmount);
       }
     },
-    [exchangeRate?.exchange_rate],
+    [exchangeRate?.bluna_exchange_rate],
   );
 
   const init = useCallback(() => {
@@ -315,7 +319,7 @@ export function Burn() {
             label="Price"
             currencyA={burnCurrency.label}
             currencyB={getCurrency.label}
-            exchangeRateAB={exchangeRate.exchange_rate}
+            exchangeRateAB={exchangeRate.bluna_exchange_rate}
             formatExchangeRate={(ratio) => formatLuna(ratio as Luna<Big>)}
           />
         )}

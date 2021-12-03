@@ -127,14 +127,16 @@ function MintBase({ className }: MintProps) {
       } else {
         const bondAmount: Luna = nextBondAmount as Luna;
         const mintAmount: bLuna = formatLunaInput(
-          big(bondAmount).div(exchangeRate?.exchange_rate ?? 1) as bLuna<Big>,
+          big(bondAmount).div(
+            exchangeRate?.bluna_exchange_rate ?? 1,
+          ) as bLuna<Big>,
         );
 
         setBondAmount(bondAmount);
         setMintAmount(mintAmount);
       }
     },
-    [exchangeRate?.exchange_rate],
+    [exchangeRate?.bluna_exchange_rate],
   );
 
   const updateMintAmount = useCallback(
@@ -145,14 +147,16 @@ function MintBase({ className }: MintProps) {
       } else {
         const mintAmount: bLuna = nextMintAmount as bLuna;
         const bondAmount: Luna = formatLunaInput(
-          big(mintAmount).mul(exchangeRate?.exchange_rate ?? 1) as Luna<Big>,
+          big(mintAmount).mul(
+            exchangeRate?.bluna_exchange_rate ?? 1,
+          ) as Luna<Big>,
         );
 
         setBondAmount(bondAmount);
         setMintAmount(mintAmount);
       }
     },
-    [exchangeRate?.exchange_rate],
+    [exchangeRate?.bluna_exchange_rate],
   );
 
   const init = useCallback(() => {
@@ -346,7 +350,7 @@ function MintBase({ className }: MintProps) {
             label="Price"
             currencyA={bondCurrency.label}
             currencyB={mintCurrency.label}
-            exchangeRateAB={exchangeRate.exchange_rate}
+            exchangeRateAB={exchangeRate.bluna_exchange_rate}
             formatExchangeRate={(ratio) => formatLuna(ratio as Luna<Big>)}
           />
         )}
