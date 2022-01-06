@@ -1,9 +1,8 @@
 import { anc80gif, GifIcon, TokenIcon } from '@anchor-protocol/token-icons';
 import { RulerTab } from '@libs/neumorphism-ui/components/RulerTab';
 import { Section } from '@libs/neumorphism-ui/components/Section';
-import { Tab } from '@libs/neumorphism-ui/components/Tab';
-import { Circles } from 'components/primitives/Circles';
 import { CenteredLayout } from 'components/layouts/CenteredLayout';
+import { Circles } from 'components/primitives/Circles';
 import { screen } from 'env';
 import { AncUstLpProvide } from 'pages/trade/components/AncUstLpProvide';
 import { AncUstLpStake } from 'pages/trade/components/AncUstLpStake';
@@ -31,30 +30,11 @@ interface Item {
   tooltip?: ReactNode;
 }
 
-const tabItems: Item[] = [
-  { label: 'POOL', value: 'pool' },
-  { label: 'STAKE', value: 'stake' },
-];
-
 const poolItems: Item[] = [
-  {
-    label: 'Provide',
-    value: 'provide',
-    tooltip:
-      'Provide liquidity to receive LP tokens. LP tokens can be staked to earn ANC token rewards',
-  },
   {
     label: 'Withdraw',
     value: 'withdraw',
     tooltip: 'Withdraw ANC liquidity provided by burning LP tokens',
-  },
-];
-
-const stakeItems: Item[] = [
-  {
-    label: 'Stake',
-    value: 'stake',
-    tooltip: 'Stake LP tokens to earn ANC token rewards',
   },
   {
     label: 'Unstake',
@@ -70,39 +50,12 @@ function RewardsAncUstLpBase({ className }: RewardsAncUstLpProps) {
     `/${ancUstLpPathname}/:view`,
   );
 
-  const tab = useMemo<Item | undefined>(() => {
+  const subTab = useMemo<Item>(() => {
     switch (pageMatch?.params.view) {
-      case 'provide':
-      case 'withdraw':
-        return tabItems[0];
-      case 'stake':
       case 'unstake':
-        return tabItems[1];
-    }
-  }, [pageMatch?.params.view]);
-
-  const tabChange = useCallback(
-    (nextTab: Item) => {
-      history.push({
-        pathname:
-          nextTab.value === 'stake'
-            ? `/${ancUstLpPathname}/stake`
-            : `/${ancUstLpPathname}/provide`,
-      });
-    },
-    [history],
-  );
-
-  const subTab = useMemo<Item | undefined>(() => {
-    switch (pageMatch?.params.view) {
-      case 'provide':
-        return poolItems[0];
-      case 'withdraw':
         return poolItems[1];
-      case 'stake':
-        return stakeItems[0];
-      case 'unstake':
-        return stakeItems[1];
+      default:
+        return poolItems[0];
     }
   }, [pageMatch?.params.view]);
 
@@ -128,25 +81,13 @@ function RewardsAncUstLpBase({ className }: RewardsAncUstLpProps) {
           </Circles>
           ANC-UST LP
         </h1>
-        <Tab
-          items={tabItems}
-          selectedItem={tab ?? tabItems[0]}
-          onChange={tabChange}
-          labelFunction={({ label }) => label}
-          keyFunction={({ value }) => value}
-          height={46}
-          borderRadius={30}
-          fontSize={12}
-        />
       </header>
 
       <Section>
         <RulerTab
           className="subtab"
-          items={tab?.value === 'stake' ? stakeItems : poolItems}
-          selectedItem={
-            subTab ?? (tab?.value === 'stake' ? stakeItems[0] : poolItems[0])
-          }
+          items={poolItems}
+          selectedItem={subTab}
           onChange={subTabChange}
           labelFunction={({ label }) => label}
           keyFunction={({ value }) => value}
@@ -154,7 +95,7 @@ function RewardsAncUstLpBase({ className }: RewardsAncUstLpProps) {
         />
 
         <div className="form">
-          {tab?.value === 'stake' && <AncUstLpStakeOverview />}
+          {subTab.value === 'unstake' && <AncUstLpStakeOverview />}
 
           <Switch>
             <Route

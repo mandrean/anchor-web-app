@@ -1,3 +1,5 @@
+import { ancUstLpPathname } from 'pages/trade/env';
+
 export interface RouteMenu {
   to: string;
   exact?: boolean;
@@ -6,28 +8,7 @@ export interface RouteMenu {
 
 export const menus: RouteMenu[] = [
   {
-    to: '/',
-    exact: true,
-    title: 'DASHBOARD',
-  },
-  {
-    to: `/mypage`,
-    title: 'MY PAGE',
-  },
-  {
-    to: '/earn',
-    title: 'EARN',
-  },
-  {
-    to: '/borrow',
-    title: 'BORROW',
-  },
-  {
-    to: '/bond',
-    title: 'BOND',
-  },
-  {
-    to: `/gov`,
-    title: 'GOVERN',
+    to: `/${ancUstLpPathname}`,
+    title: 'ANC-UST LP',
   },
 ];

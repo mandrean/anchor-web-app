@@ -174,17 +174,6 @@ export function WalletDetailContentBase({
                 </FlatButton>
               </div>
             </div>
-
-            <div className="send">
-              <FlatButton
-                onClick={() => {
-                  openSend();
-                  closePopup();
-                }}
-              >
-                SEND
-              </FlatButton>
-            </div>
           </>
         )}
 
