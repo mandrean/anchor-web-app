@@ -6,6 +6,7 @@ import { AppProviders } from 'configurations/app';
 import { NotificationProvider } from 'contexts/notification';
 import { JobsProvider } from 'jobs/Jobs';
 import { TermsOfService } from 'pages/terms';
+import { ClaimAncUstLp } from 'pages/trade/claim.anc-ust-lp';
 import { ancUstLpPathname } from 'pages/trade/env';
 import { RewardsAncUstLp } from 'pages/trade/rewards.anc-ust-lp';
 import React from 'react';
@@ -32,6 +33,11 @@ export function App() {
                 <Route
                   path={`/${ancUstLpPathname}`}
                   component={RewardsAncUstLp}
+                />
+
+                <Route
+                  path={`/claim/${ancUstLpPathname}`}
+                  component={ClaimAncUstLp}
                 />
 
                 {/* TOS */}

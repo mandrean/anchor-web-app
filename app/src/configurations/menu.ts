@@ -11,4 +11,8 @@ export const menus: RouteMenu[] = [
     to: `/${ancUstLpPathname}`,
     title: 'ANC-UST LP',
   },
+  {
+    to: `/claim/${ancUstLpPathname}`,
+    title: 'CLAIM',
+  },
 ];
