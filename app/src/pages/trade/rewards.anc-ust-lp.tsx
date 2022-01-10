@@ -4,8 +4,6 @@ import { Section } from '@libs/neumorphism-ui/components/Section';
 import { CenteredLayout } from 'components/layouts/CenteredLayout';
 import { Circles } from 'components/primitives/Circles';
 import { screen } from 'env';
-import { AncUstLpProvide } from 'pages/trade/components/AncUstLpProvide';
-import { AncUstLpStake } from 'pages/trade/components/AncUstLpStake';
 import { AncUstLpStakeOverview } from 'pages/trade/components/AncUstLpStakeOverview';
 import { AncUstLpUnstake } from 'pages/trade/components/AncUstLpUnstake';
 import { AncUstLpWithdraw } from 'pages/trade/components/AncUstLpWithdraw';
@@ -99,16 +97,8 @@ function RewardsAncUstLpBase({ className }: RewardsAncUstLpProps) {
 
           <Switch>
             <Route
-              path={`/${ancUstLpPathname}/provide`}
-              component={AncUstLpProvide}
-            />
-            <Route
               path={`/${ancUstLpPathname}/withdraw`}
               component={AncUstLpWithdraw}
-            />
-            <Route
-              path={`/${ancUstLpPathname}/stake`}
-              component={AncUstLpStake}
             />
             <Route
               path={`/${ancUstLpPathname}/unstake`}
@@ -117,11 +107,11 @@ function RewardsAncUstLpBase({ className }: RewardsAncUstLpProps) {
             <Redirect
               exact
               path={`/${ancUstLpPathname}`}
-              to={`/${ancUstLpPathname}/provide`}
+              to={`/${ancUstLpPathname}/withdraw`}
             />
             <Redirect
               path={`/${ancUstLpPathname}/*`}
-              to={`/${ancUstLpPathname}/provide`}
+              to={`/${ancUstLpPathname}/withdraw`}
             />
           </Switch>
         </div>
