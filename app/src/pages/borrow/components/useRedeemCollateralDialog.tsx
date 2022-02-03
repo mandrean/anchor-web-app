@@ -1,5 +1,6 @@
-import { BorrowBorrower, BorrowMarket } from '@anchor-protocol/app-fns';
+import { BorrowBorrower } from '@anchor-protocol/app-fns';
 import {
+  BorrowMarketWithDisplay,
   useBorrowRedeemCollateralForm,
   useBorrowRedeemCollateralTx,
 } from '@anchor-protocol/app-provider';
@@ -38,7 +39,7 @@ import { LTVGraph } from './LTVGraph';
 interface FormParams {
   className?: string;
   collateralToken: CW20Addr;
-  fallbackBorrowMarket: BorrowMarket;
+  fallbackBorrowMarket: BorrowMarketWithDisplay;
   fallbackBorrowBorrower: BorrowBorrower;
 }
 

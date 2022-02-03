@@ -1,3 +1,4 @@
+import { OverseerWhitelistWithDisplay } from '@anchor-protocol/app-provider';
 import { moneyMarket, Rate } from '@anchor-protocol/types';
 import { formatRate } from '@libs/formatter';
 import { u, UST } from '@libs/types';
@@ -28,7 +29,7 @@ export interface BorrowBorrowFormDependency {
   overseerCollaterals: moneyMarket.overseer.CollateralsResponse;
   oraclePrices: moneyMarket.oracle.PricesResponse;
   borrowRate: moneyMarket.interestModel.BorrowRateResponse;
-  overseerWhitelist: moneyMarket.overseer.WhitelistResponse;
+  overseerWhitelist: OverseerWhitelistWithDisplay;
   bAssetLtvsAvg: BAssetLtv;
   blocksPerYear: number;
   taxRate: Rate;
