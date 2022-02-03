@@ -1,5 +1,6 @@
-import { BorrowBorrower, BorrowMarket } from '@anchor-protocol/app-fns';
+import { BorrowBorrower } from '@anchor-protocol/app-fns';
 import {
+  BorrowMarketWithDisplay,
   useBorrowBorrowForm,
   useBorrowBorrowTx,
 } from '@anchor-protocol/app-provider';
@@ -35,7 +36,7 @@ import { LTVGraph } from './LTVGraph';
 
 interface FormParams {
   className?: string;
-  fallbackBorrowMarket: BorrowMarket;
+  fallbackBorrowMarket: BorrowMarketWithDisplay;
   fallbackBorrowBorrower: BorrowBorrower;
 }
 

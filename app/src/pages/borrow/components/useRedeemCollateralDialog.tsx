@@ -1,8 +1,4 @@
-import {
-  BorrowBorrower,
-  BorrowMarket,
-  prettifySymbol,
-} from '@anchor-protocol/app-fns';
+import { BorrowBorrower, BorrowMarket } from '@anchor-protocol/app-fns';
 import {
   useBorrowRedeemCollateralForm,
   useBorrowRedeemCollateralTx,
@@ -159,7 +155,7 @@ function ComponentBase({
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {prettifySymbol(states.collateral.symbol)}
+                {states.collateral.tokenDisplay.symbol}
               </InputAdornment>
             ),
           }}
@@ -184,7 +180,7 @@ function ComponentBase({
               {states.withdrawableAmount
                 ? formatBAsset(demicrofy(states.withdrawableAmount))
                 : 0}{' '}
-              {prettifySymbol(states.collateral.symbol)}
+              {states.collateral.tokenDisplay.symbol}
             </span>
           </span>
         </div>

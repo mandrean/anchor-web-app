@@ -1,12 +1,12 @@
+import { OverseerWhitelistWithDisplay } from '@anchor-protocol/app-provider';
 import { formatUST } from '@anchor-protocol/notation';
 import type { Rate, UST } from '@anchor-protocol/types';
 import { CW20Addr, moneyMarket } from '@anchor-protocol/types';
 import big, { Big } from 'big.js';
-import { prettifySymbol } from '@anchor-protocol/app-fns/functions/prettifySymbol';
 
 export function computeEstimateLiquidationPrice(
   nextLtv: Rate<Big>,
-  overseerWhitelist: moneyMarket.overseer.WhitelistResponse,
+  overseerWhitelist: OverseerWhitelistWithDisplay,
   overseerCollaterals: moneyMarket.overseer.CollateralsResponse,
   oraclePrices: moneyMarket.oracle.PricesResponse,
   targetToken?: CW20Addr,
@@ -39,9 +39,9 @@ export function computeEstimateLiquidationPrice(
     const liqPrice = big(oracle.price).mul(
       big(nextLtv).div(whitelist.max_ltv),
     ) as UST<Big>;
-    return `Estimated ${prettifySymbol(
-      whitelist.symbol,
-    )} liquidation price: ${formatUST(liqPrice)}`;
+    return `Estimated ${
+      whitelist.tokenDisplay.symbol
+    } liquidation price: ${formatUST(liqPrice)}`;
   }
 
   return null;

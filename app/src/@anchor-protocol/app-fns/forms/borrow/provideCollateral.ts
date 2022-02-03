@@ -1,3 +1,4 @@
+import { OverseerWhitelistWithDisplay } from '@anchor-protocol/app-provider';
 import {
   bAsset,
   CW20Addr,
@@ -29,7 +30,7 @@ export interface BorrowProvideCollateralFormDependency {
   userUSTBalance: u<UST>;
   userBAssetBalance: u<bAsset>;
   oraclePrices: moneyMarket.oracle.PricesResponse;
-  overseerWhitelist: moneyMarket.overseer.WhitelistResponse;
+  overseerWhitelist: OverseerWhitelistWithDisplay;
   bAssetLtvs: BAssetLtvs;
   bAssetLtvsAvg: BAssetLtv;
   marketBorrowerInfo: moneyMarket.market.BorrowerInfoResponse;
@@ -46,7 +47,7 @@ export interface BorrowProvideCollateralFormStates
   bAssetLtvsAvg: BAssetLtv;
 
   dangerLtv: Rate<Big>;
-  collateral: moneyMarket.overseer.WhitelistResponse['elems'][number];
+  collateral: OverseerWhitelistWithDisplay['elems'][0];
   //collateralDenom: COLLATERAL_DENOMS | undefined;
 
   txFee: u<UST>;
