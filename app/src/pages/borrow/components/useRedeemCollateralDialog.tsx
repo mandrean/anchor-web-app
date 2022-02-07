@@ -1,9 +1,9 @@
 import { BorrowBorrower } from '@anchor-protocol/app-fns';
 import {
+  BorrowMarketWithDisplay,
   useBorrowRedeemCollateralForm,
   useBorrowRedeemCollateralTx,
 } from '@anchor-protocol/app-provider';
-import { BorrowMarketWithDisplay } from '@anchor-protocol/app-provider';
 import {
   formatBAsset,
   formatBAssetInput,
