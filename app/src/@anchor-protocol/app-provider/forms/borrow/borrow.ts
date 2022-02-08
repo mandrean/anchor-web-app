@@ -28,6 +28,7 @@ export function useBorrowBorrowForm(
       borrowRate,
       oraclePrices,
       bAssetLtvsAvg,
+      bAssetLtvs,
       overseerWhitelist,
     } = fallbackBorrowMarket,
   } = useBorrowMarketQuery();
@@ -46,6 +47,7 @@ export function useBorrowBorrowForm(
       oraclePrices,
       borrowRate,
       bAssetLtvsAvg,
+      bAssetLtvs,
       overseerCollaterals,
       blocksPerYear,
       marketBorrowerInfo,

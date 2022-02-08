@@ -1,4 +1,4 @@
-import { BorrowBorrower } from '@anchor-protocol/app-fns';
+import { BorrowBorrower, ANCHOR_SAFE_RATIO } from '@anchor-protocol/app-fns';
 import {
   BorrowMarketWithDisplay,
   useBorrowRedeemCollateralForm,
@@ -207,19 +207,15 @@ function ComponentBase({
         <figure className="graph">
           <LTVGraph
             disabled={!connectedWallet}
-            maxLtv={states.bAssetLtvsAvg.max}
-            safeLtv={states.bAssetLtvsAvg.safe}
-            dangerLtv={states.userMaxLtv}
-            currentLtv={states.currentLtv}
-            nextLtv={states.nextLtv}
-            userMinLtv={states.currentLtv}
-            userMaxLtv={states.bAssetLtvsAvg.max}
-            onStep={states.ltvStepFunction}
+            start={states.currentLtv?.toNumber() ?? 0}
+            end={1}
+            value={states.nextLtv}
             onChange={onLtvChange}
+            onStep={states.ltvStepFunction}
           />
         </figure>
 
-        {states.nextLtv?.gt(states.bAssetLtvsAvg.safe) && (
+        {states.nextLtv?.gt(ANCHOR_SAFE_RATIO) && (
           <MessageBox
             level="error"
             hide={{
@@ -228,11 +224,11 @@ function ComponentBase({
             }}
             style={{ userSelect: 'none', fontSize: 12 }}
           >
-            Caution: As current LTV is above recommended LTV, there is an
-            increased probability fluctuations in collateral value may trigger
-            immediate liquidations. It is strongly recommended to keep the LTV
-            below the maximum by repaying loans with stablecoins or providing
-            additional collateral.
+            Caution: As current borrow usage is above the recommended amount,
+            fluctuations in collateral value may trigger immediate liquidations.
+            It is strongly recommended to keep the borrow usage below the
+            maximum by repaying loans with stablecoins or providing additional
+            collateral.
           </MessageBox>
         )}
 

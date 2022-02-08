@@ -1,5 +1,10 @@
 import { OverseerWhitelistWithDisplay } from '@anchor-protocol/app-provider';
 import {
+  computeBorrowedAmount,
+  computeBorrowLimit,
+  computeLtv,
+} from '@anchor-protocol/app-fns';
+import {
   bAsset,
   CW20Addr,
   moneyMarket,
@@ -8,13 +13,11 @@ import {
   UST,
 } from '@anchor-protocol/types';
 import { FormReturn } from '@libs/use-form';
-import big, { Big } from 'big.js';
-import { computeCurrentLtv } from '../../logics/borrow/computeCurrentLtv';
+import big, { Big, BigSource } from 'big.js';
 import { computeLtvToRedeemAmount } from '../../logics/borrow/computeLtvToRedeemAmount';
 import { computeRedeemAmountToLtv } from '../../logics/borrow/computeRedeemAmountToLtv';
 import { computeRedeemCollateralBorrowLimit } from '../../logics/borrow/computeRedeemCollateralBorrowLimit';
 import { computeRedeemCollateralNextLtv } from '../../logics/borrow/computeRedeemCollateralNextLtv';
-import { computeRedeemCollateralWithdrawableAmount } from '../../logics/borrow/computeRedeemCollateralWithdrawableAmount';
 import { pickCollateral } from '../../logics/borrow/pickCollateral';
 import { validateRedeemAmount } from '../../logics/borrow/validateRedeemAmount';
 import { validateTxFee } from '../../logics/common/validateTxFee';
@@ -55,7 +58,7 @@ export interface BorrowRedeemCollateralFormStates
   nextLtv: Rate<Big> | undefined;
   withdrawableAmount: u<bAsset<Big>>;
   withdrawableMaxAmount: u<bAsset<Big>>;
-  borrowLimit: u<UST<Big>> | undefined;
+  borrowLimit: u<UST<Big>>;
   invalidTxFee: string | undefined;
   invalidRedeemAmount: string | undefined;
 
@@ -80,13 +83,12 @@ export const borrowRedeemCollateralForm = ({
 }: BorrowRedeemCollateralFormDependency) => {
   const collateral = pickCollateral(collateralToken, overseerWhitelist);
 
-  //const collateralDenom = pickCollateralDenom(collateral);
-
   const amountToLtv = computeRedeemAmountToLtv(
     collateralToken,
     marketBorrowerInfo,
     overseerCollaterals,
     oraclePrices,
+    bAssetLtvs,
   );
 
   const ltvToAmount = computeLtvToRedeemAmount(
@@ -94,14 +96,14 @@ export const borrowRedeemCollateralForm = ({
     marketBorrowerInfo,
     overseerCollaterals,
     oraclePrices,
+    bAssetLtvs,
   );
 
   const userMaxLtv = big(bAssetLtvsAvg.max).minus(0.1) as Rate<Big>;
 
-  const currentLtv = computeCurrentLtv(
-    marketBorrowerInfo,
-    overseerCollaterals,
-    oraclePrices,
+  const currentLtv = computeLtv(
+    computeBorrowLimit(overseerCollaterals, oraclePrices, bAssetLtvs),
+    computeBorrowedAmount(marketBorrowerInfo),
   );
 
   return ({
@@ -116,14 +118,9 @@ export const borrowRedeemCollateralForm = ({
       amountToLtv,
     );
 
-    const { withdrawableAmount, withdrawableMaxAmount } =
-      computeRedeemCollateralWithdrawableAmount(
-        collateralToken,
-        marketBorrowerInfo,
-        overseerCollaterals,
-        oraclePrices,
-        bAssetLtvs,
-      );
+    const withdrawableAmount = ltvToAmount(0.75 as Rate<BigSource>);
+
+    const withdrawableMaxAmount = ltvToAmount(1 as Rate<BigSource>);
 
     const borrowLimit = computeRedeemCollateralBorrowLimit(
       collateralToken,

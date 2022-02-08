@@ -1,5 +1,9 @@
 import { OverseerWhitelistWithDisplay } from '@anchor-protocol/app-provider';
 import {
+  computeBorrowedAmount,
+  computeBorrowLimit,
+} from '@anchor-protocol/app-fns';
+import {
   bAsset,
   CW20Addr,
   moneyMarket,
@@ -9,7 +13,7 @@ import {
 } from '@anchor-protocol/types';
 import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
-import { computeCurrentLtv } from '../../logics/borrow/computeCurrentLtv';
+import { computeLtv } from '../../logics/borrow/computeLtv';
 import { computeDepositAmountToBorrowLimit } from '../../logics/borrow/computeDepositAmountToBorrowLimit';
 import { computeDepositAmountToLtv } from '../../logics/borrow/computeDepositAmountToLtv';
 import { computeLtvToDepositAmount } from '../../logics/borrow/computeLtvToDepositAmount';
@@ -53,7 +57,7 @@ export interface BorrowProvideCollateralFormStates
   txFee: u<UST>;
   currentLtv: Rate<Big> | undefined;
   nextLtv: Rate<Big> | undefined;
-  borrowLimit: u<UST<Big>> | undefined;
+  borrowLimit: u<UST<Big>>;
   invalidTxFee: string | undefined;
   invalidDepositAmount: string | undefined;
 
@@ -81,6 +85,7 @@ export const borrowProvideCollateralForm = ({
     marketBorrowerInfo,
     overseerCollaterals,
     oraclePrices,
+    bAssetLtvs,
   );
 
   const ltvToAmount = computeLtvToDepositAmount(
@@ -88,6 +93,7 @@ export const borrowProvideCollateralForm = ({
     marketBorrowerInfo,
     overseerCollaterals,
     oraclePrices,
+    bAssetLtvs,
   );
 
   const amountToBorrowLimit = computeDepositAmountToBorrowLimit(
@@ -97,17 +103,19 @@ export const borrowProvideCollateralForm = ({
     bAssetLtvs,
   );
 
-  const currentLtv = computeCurrentLtv(
-    marketBorrowerInfo,
+  const borrowedAmount = computeBorrowedAmount(marketBorrowerInfo);
+
+  const borrowLimit = computeBorrowLimit(
     overseerCollaterals,
     oraclePrices,
+    bAssetLtvs,
   );
+
+  const currentLtv = computeLtv(borrowLimit, borrowedAmount);
 
   const dangerLtv = big(bAssetLtvsAvg.max).minus(0.1) as Rate<Big>;
 
   const collateral = pickCollateral(collateralToken, overseerWhitelist);
-
-  //const collateralDenom = pickCollateralDenom(collateral);
 
   const invalidTxFee = connected
     ? validateTxFee(userUSTBalance, fixedFee)
@@ -156,14 +164,13 @@ export const borrowProvideCollateralForm = ({
         depositAmount,
         collateral,
         borrowLimit,
-        //collateralDenom,
         currentLtv,
         amountToLtv,
+        ltvStepFunction,
         dangerLtv,
         invalidDepositAmount,
         invalidTxFee,
         nextLtv,
-        ltvStepFunction,
         ltvToAmount,
         userBAssetBalance,
         availablePost,

@@ -29,6 +29,7 @@ export function useBorrowRepayForm(
       oraclePrices,
       marketState,
       bAssetLtvsAvg,
+      bAssetLtvs,
       overseerWhitelist,
     } = fallbackBorrowMarket,
   } = useBorrowMarketQuery();
@@ -58,6 +59,7 @@ export function useBorrowRepayForm(
       blockHeight,
       marketState,
       bAssetLtvsAvg,
+      bAssetLtvs,
     },
     () => ({ repayAmount: '' as UST }),
   );
